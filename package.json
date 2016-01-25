@@ -1,0 +1,36 @@
+{
+  "name": "l_and_l_react",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "webpack": "webpack --progress --colors --display-error-details --config webpack.dev.config.js",
+    "webpack:watch": "webpack -w --progress --colors --display-error-details --config webpack.dev.config.js",
+    "webpack:production": "NODE_ENV=production webpack --progress --colors --display-error-details --config webpack.prod.config.js",
+    "build": "npm run webpack:production",
+    "watch": "parallelshell \"npm run webpack:watch\" \"live-server --ignore='./src,./test'\" ",
+    "test": "mocha --compilers js:babel-register"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-core": "^6.4.5",
+    "babel-loader": "^6.2.1",
+    "babel-preset-es2015": "^6.3.13",
+    "babel-preset-react": "^6.3.13",
+    "chai": "^3.4.1",
+    "css-loader": "^0.23.1",
+    "live-server": "^0.9.1",
+    "mocha": "^2.3.4",
+    "parallelshell": "^2.0.0",
+    "sinon": "^1.17.2",
+    "style-loader": "^0.13.0",
+    "webpack": "^1.12.12"
+  },
+  "dependencies": {
+    "history": "^1.17.0",
+    "react": "^0.14.6",
+    "react-dom": "^0.14.6",
+    "react-router": "^1.0.3"
+  }
+}
