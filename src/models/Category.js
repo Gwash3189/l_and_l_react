@@ -1,10 +1,6 @@
-let count = 0;
-function id() {
-  count = count + 1;
-  return count;
-}
+import id from './../helpers/id-helpers'
 
-export default class Note {
+export default class Category {
   constructor(title, notes = []) {
     this.title = title;
     this.notes = notes;

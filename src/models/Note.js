@@ -1,8 +1,4 @@
-let count = 0;
-function id() {
-  count = count + 1;
-  return count;
-}
+import id from './../helpers/id-helpers'
 
 export default class Note {
   constructor(title, content, date = new Date()) {

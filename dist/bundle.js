@@ -60,15 +60,15 @@
 
 	var _App2 = _interopRequireDefault(_App);
 
-	var _CategoryContainer = __webpack_require__(210);
+	var _CategoryContainer = __webpack_require__(213);
 
 	var _CategoryContainer2 = _interopRequireDefault(_CategoryContainer);
 
-	var _NotesContainer = __webpack_require__(211);
+	var _NotesContainer = __webpack_require__(214);
 
 	var _NotesContainer2 = _interopRequireDefault(_NotesContainer);
 
-	var _styles = __webpack_require__(212);
+	var _styles = __webpack_require__(215);
 
 	var styles = _interopRequireWildcard(_styles);
 
@@ -82,6 +82,7 @@
 	  _react2.default.createElement(
 	    _reactRouter.Route,
 	    { path: '/', component: _App2.default },
+	    _react2.default.createElement(_reactRouter.IndexRoute, { component: _CategoryContainer2.default }),
 	    _react2.default.createElement(
 	      _reactRouter.Route,
 	      { path: 'category/:id', component: _CategoryContainer2.default },
@@ -24026,6 +24027,8 @@
 
 	'use strict';
 
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	Object.defineProperty(exports, "__esModule", {
@@ -24044,9 +24047,13 @@
 
 	var _Category2 = _interopRequireDefault(_Category);
 
-	var _Note = __webpack_require__(209);
+	var _Note = __webpack_require__(210);
 
 	var _Note2 = _interopRequireDefault(_Note);
+
+	var _Sidebar = __webpack_require__(211);
+
+	var _Sidebar2 = _interopRequireDefault(_Sidebar);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -24059,29 +24066,39 @@
 	var Main = function (_Component) {
 	  _inherits(Main, _Component);
 
-	  function Main() {
+	  function Main(props) {
 	    _classCallCheck(this, Main);
 
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Main).apply(this, arguments));
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Main).call(this, props));
+
+	    _this.state = new _App2.default([new _Category2.default('Some Notes', [new _Note2.default('A Note', 'a starter note')]), new _Category2.default('More Notes', [new _Note2.default('Another Note', 'a starter note about something else')])]);
+	    return _this;
 	  }
 
 	  _createClass(Main, [{
+	    key: 'updateCategories',
+	    value: function updateCategories(f) {
+	      this.setState({
+	        categories: f(this.state.categories)
+	      });
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(
 	        'div',
-	        null,
-	        this.state,
+	        { className: 'container sidebar-left-push' },
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'sidebar' },
-	          'sidebar content'
+	          { className: 'sidebar-container' },
+	          _react2.default.createElement(_Sidebar2.default, { categories: this.state.categories })
 	        ),
 	        _react2.default.createElement(
 	          'div',
-	          null,
-	          'main content',
-	          this.props.children
+	          { className: 'col-md-10 main-content-container' },
+	          (0, _react.cloneElement)(this.props.children, _extends({
+	            updateCategories: this.updateCategories.bind(this)
+	          }, this.state))
 	        )
 	      );
 	    }
@@ -24090,7 +24107,6 @@
 	  return Main;
 	}(_react.Component);
 
-	Main.initialState = new _App2.default([new _Category2.default('Some Notes', [new _Note2.default('A Note', 'a starter note')]), new _Category2.default('More Notes', [new _Note2.default('Another Note', 'a starter note about something else')])]);
 	exports.default = Main;
 
 /***/ },
@@ -24099,76 +24115,51 @@
 
 	"use strict";
 
-	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	var App = function () {
-	  function App() {
-	    var categories = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
+	var App = function App() {
+	  var categories = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
 
-	    _classCallCheck(this, App);
+	  _classCallCheck(this, App);
 
-	    this.categories = categories;
-	  }
-
-	  _createClass(App, [{
-	    key: "findNotesByCategoryId",
-	    value: function findNotesByCategoryId(categoryId) {
-	      var _categories$filter$ma = this.categories.filter(function (category) {
-	        return category.id === categoryId;
-	      }).map(function (category) {
-	        return category.notes;
-	      });
-
-	      var _categories$filter$ma2 = _slicedToArray(_categories$filter$ma, 1);
-
-	      var notes = _categories$filter$ma2[0];
-
-	      return notes;
-	    }
-	  }]);
-
-	  return App;
-	}();
+	  this.categories = categories;
+	};
 
 	exports.default = App;
 
 /***/ },
 /* 208 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 
+	var _idHelpers = __webpack_require__(209);
+
+	var _idHelpers2 = _interopRequireDefault(_idHelpers);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	var count = 0;
-	function id() {
-	  count = count + 1;
-	  return count;
-	}
-
-	var Note = function Note(title) {
+	var Category = function Category(title) {
 	  var notes = arguments.length <= 1 || arguments[1] === undefined ? [] : arguments[1];
 
-	  _classCallCheck(this, Note);
+	  _classCallCheck(this, Category);
 
 	  this.title = title;
 	  this.notes = notes;
-	  this.id = id();
+	  this.id = (0, _idHelpers2.default)();
 	};
 
-	exports.default = Note;
+	exports.default = Category;
 
 /***/ },
 /* 209 */
@@ -24179,14 +24170,30 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
+	exports.default = id;
 	var count = 0;
 	function id() {
 	  count = count + 1;
 	  return count;
 	}
+
+/***/ },
+/* 210 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _idHelpers = __webpack_require__(209);
+
+	var _idHelpers2 = _interopRequireDefault(_idHelpers);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	var Note = function Note(title, content) {
 	  var date = arguments.length <= 2 || arguments[2] === undefined ? new Date() : arguments[2];
@@ -24196,13 +24203,79 @@
 	  this.title = title;
 	  this.content = content;
 	  this.date = date;
-	  this.id = id();
+	  this.id = (0, _idHelpers2.default)();
 	};
 
 	exports.default = Note;
 
 /***/ },
-/* 210 */
+/* 211 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _SidebarItem = __webpack_require__(212);
+
+	var _SidebarItem2 = _interopRequireDefault(_SidebarItem);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Sidebar = function (_Component) {
+	  _inherits(Sidebar, _Component);
+
+	  function Sidebar() {
+	    _classCallCheck(this, Sidebar);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Sidebar).apply(this, arguments));
+	  }
+
+	  _createClass(Sidebar, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(
+	          'ul',
+	          { className: 'sidebar-list' },
+	          this.props.categories.map(function (category) {
+	            return _react2.default.createElement(
+	              _SidebarItem2.default,
+	              { key: category.id, className: 'sidebar-list-item' },
+	              category.title
+	            );
+	          })
+	        )
+	      );
+	    }
+	  }]);
+
+	  return Sidebar;
+	}(_react.Component);
+
+	Sidebar.defaultProps = {
+	  categories: [{ title: 'asd' }]
+	};
+	exports.default = Sidebar;
+
+/***/ },
+/* 212 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -24225,23 +24298,149 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var CategoryContainer = function (_Component) {
-	  _inherits(CategoryContainer, _Component);
+	var SidebarItem = function (_Component) {
+	  _inherits(SidebarItem, _Component);
 
-	  function CategoryContainer() {
-	    _classCallCheck(this, CategoryContainer);
+	  function SidebarItem() {
+	    _classCallCheck(this, SidebarItem);
 
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(CategoryContainer).apply(this, arguments));
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(SidebarItem).apply(this, arguments));
 	  }
 
-	  _createClass(CategoryContainer, [{
+	  _createClass(SidebarItem, [{
 	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(
+	        'li',
+	        this.props,
+	        this.props.children
+	      );
+	    }
+	  }]);
+
+	  return SidebarItem;
+	}(_react.Component);
+
+	SidebarItem.defaultProps = {
+	  children: ''
+	};
+	exports.default = SidebarItem;
+
+/***/ },
+/* 213 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _Category = __webpack_require__(208);
+
+	var _Category2 = _interopRequireDefault(_Category);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var CategoryContainer = function (_Component) {
+	  _inherits(CategoryContainer, _Component);
+
+	  function CategoryContainer(props) {
+	    _classCallCheck(this, CategoryContainer);
+
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(CategoryContainer).call(this, props));
+
+	    _this.state = {
+	      editingTitle: false
+	    };
+	    return _this;
+	  }
+
+	  _createClass(CategoryContainer, [{
+	    key: 'renderWithNoCategory',
+	    value: function renderWithNoCategory() {
+	      return _react2.default.createElement(
 	        'div',
 	        null,
-	        'Category Container'
+	        this.state.editingTitle ? _react2.default.createElement('input', { ref: 'newNoteBookInput', onKeyDown: this.handleKeyDown.bind(this), onBlur: this.handleBlurTitle.bind(this), className: 'new-note-book-input' }) : _react2.default.createElement(
+	          'h1',
+	          { onClick: this.handleEditTitle.bind(this) },
+	          'New Notebook'
+	        )
 	      );
+	    }
+	  }, {
+	    key: 'renderWithCategory',
+	    value: function renderWithCategory() {
+	      return _react2.default.createElement(
+	        'span',
+	        null,
+	        'Category'
+	      );
+	    }
+	  }, {
+	    key: 'createNewCategory',
+	    value: function createNewCategory(title) {
+	      this.props.updateCategories(function (categories) {
+	        return categories.concat(new _Category2.default(title));
+	      });
+	    }
+	  }, {
+	    key: 'handleKeyDown',
+	    value: function handleKeyDown(e) {
+	      var keys = {
+	        '27': 'escape',
+	        '13': 'enter'
+	      };
+
+	      if (keys[e.which] === 'enter') {
+	        this.createNewCategory(e.target.value);
+	        this.handleBlurTitle();
+	      }
+	      if (keys[e.which] === 'escape') {
+	        this.handleBlurTitle();
+	      }
+	    }
+	  }, {
+	    key: 'handleEditTitle',
+	    value: function handleEditTitle() {
+	      var _this2 = this;
+
+	      this.setState({
+	        editingTitle: true
+	      }, function () {
+	        _this2.refs.newNoteBookInput.focus();
+	      });
+	    }
+	  }, {
+	    key: 'handleBlurTitle',
+	    value: function handleBlurTitle() {
+	      this.setState({
+	        editingTitle: false
+	      });
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var markUp = _react2.default.createElement(
+	        'div',
+	        null,
+	        this.props.params.id ? this.renderWithCategory() : this.renderWithNoCategory()
+	      );
+
+	      return markUp;
 	    }
 	  }]);
 
@@ -24254,7 +24453,7 @@
 	exports.default = CategoryContainer;
 
 /***/ },
-/* 211 */
+/* 214 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -24306,16 +24505,16 @@
 	exports.default = NotesContainer;
 
 /***/ },
-/* 212 */
+/* 215 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(213);
+	var content = __webpack_require__(216);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(215)(content, {});
+	var update = __webpack_require__(218)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -24332,21 +24531,21 @@
 	}
 
 /***/ },
-/* 213 */
+/* 216 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(214)();
+	exports = module.exports = __webpack_require__(217)();
 	// imports
 
 
 	// module
-	exports.push([module.id, "", ""]);
+	exports.push([module.id, "html, body, #app, .container {\n    height: 100%;\n    width: 100%;\n}\n\nbody {\n  margin: 0;\n}\n\n.main-content-container {\n  padding-left: 20px;\n}\n\n.sidebar-left-push {\n  padding-left: 250px;\n}\n\n.sidebar-container {\n  width: 250px;\n  position: fixed;\n  left: 250px;\n  height: 100%;\n  margin-left: -250px;\n  overflow-y: auto;\n  background-color: black;\n}\n\n.sidebar-list {\n  position: absolute;\n  top: 0;\n  width: 250px;\n  margin: 0;\n  padding: 0;\n  list-style: none;\n}\n\n.sidebar-list-item {\n  text-indent: 20px;\n  line-height: 40px;\n  color: #999;\n}\n\n.sidebar-list-item:hover {\n  color: #EEEEEE;\n  background-color: #555555\n}\n\n.new-note-book-input {\n  margin-top: 20px;\n  margin-bottom: 10px;\n  font-weight: 500;\n  line-height: 1.1;\n  font-size: 36px;\n  height: 39px;\n  width: 100%;\n}\n", ""]);
 
 	// exports
 
 
 /***/ },
-/* 214 */
+/* 217 */
 /***/ function(module, exports) {
 
 	/*
@@ -24402,7 +24601,7 @@
 
 
 /***/ },
-/* 215 */
+/* 218 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
