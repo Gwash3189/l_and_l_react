@@ -10,9 +10,8 @@ const routes = (
   <Router history={browserHistory}>
     <Route path='/' component={App}>
       <IndexRoute component={CategoryContainer} />
-      <Route path='category/:id' component={CategoryContainer}>
-        <Route path='note/:id' component={NotesContainer}>
-        </Route>
+      <Route path='category/:cid' component={CategoryContainer}>
+          <Route path='note/:nid' component={NotesContainer} />
       </Route>
     </Route>
   </Router>

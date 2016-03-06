@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router';
+import map from 'lodash/map';
 
 import SidebarItem from './SidebarItem';
 
@@ -12,11 +14,13 @@ export default class Sidebar extends Component {
       <div>
         <ul className='sidebar-list'>
         {
-          this.props.categories.map(category => {
+          map(this.props.categories, category => {
             return (
-              <SidebarItem key={category.id} className='sidebar-list-item'>
-                {category.title}
-              </SidebarItem>
+              <Link activeClassName='sidebar-active-link' key={category.id} className='link' to={`category/${category.id}`}>
+                <SidebarItem className='sidebar-list-item'>
+                  {category.title}
+                </SidebarItem>
+              </Link>
             );
           })
         }

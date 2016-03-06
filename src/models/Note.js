@@ -1,4 +1,5 @@
 import id from './../helpers/id-helpers'
+import { markdown } from 'markdown';
 
 export default class Note {
   constructor(title, content, date = new Date()) {

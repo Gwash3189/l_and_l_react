@@ -1,5 +1,11 @@
 import React, { Component } from 'react';
-import Category from './../models/Category'
+import get from 'lodash/get';
+import set from 'lodash/set';
+import cloneDeep from 'lodash/cloneDeep';
+import Category from './../models/Category';
+import CategoryList from './CategoryList';
+import NotesContainer from './NotesContainer';
+import { has, setCategory, updateNote } from './../helpers/app-helper';
 
 export default class CategoryContainer extends Component {
   static defaultProps = {
@@ -8,73 +14,23 @@ export default class CategoryContainer extends Component {
 
   constructor(props) {
     super(props);
+
     this.state = {
       editingTitle: false
     };
   }
 
-  renderWithNoCategory() {
-    return (
-      <div>
-        {
-          this.state.editingTitle
-            ? <input ref='newNoteBookInput' onKeyDown={::this.handleKeyDown} onBlur={::this.handleBlurTitle} className='new-note-book-input'/>
-            : <h1 onClick={::this.handleEditTitle}>New Notebook</h1>
-        }
-      </div>
-    )
-  }
+  handleNoteChange(note) {
+    const category = cloneDeep(this.props.category);
 
-  renderWithCategory() {
-    return <span>Category</span>
-  }
+    category.notes = updateNote(this.props.category.notes, note);
 
-  createNewCategory(title) {
-    this.props.updateCategories((categories) => {
-      return categories.concat(new Category(title))
-    });
-  }
-
-  handleKeyDown(e) {
-    const keys = {
-      '27': 'escape',
-      '13': 'enter'
-    };
-
-    if (keys[e.which] === 'enter') {
-      this.createNewCategory(e.target.value);
-      this.handleBlurTitle();
-    }
-    if (keys[e.which] === 'escape') {
-      this.handleBlurTitle();
-    }
-  }
-
-  handleEditTitle() {
-    this.setState({
-      editingTitle: true
-    }, () => {
-      this.refs.newNoteBookInput.focus();
-    });
-  }
-
-  handleBlurTitle() {
-    this.setState({
-      editingTitle: false
-    });
+    this.props.updateCategories(setCategory(category));
   }
 
   render() {
-    const markUp = (
-      <div>
-        {
-          this.props.params.id
-          ? this.renderWithCategory()
-          : this.renderWithNoCategory()
-        }
-      </div>
-    )
-
-    return markUp
+    return has(this.props.params, 'cid', 'nid')
+      ? <NotesContainer handleNoteChange={::this.handleNoteChange} categoryId={this.props.category.id} categoryTitle={this.props.category.title} note={get(this.props.category.notes, this.props.params.nid)}/>
+      : <CategoryList category={this.props.category}/>
   }
 }
