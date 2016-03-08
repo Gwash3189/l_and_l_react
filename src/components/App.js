@@ -4,7 +4,8 @@ import Category from '../models/Category';
 import Note from '../models/Note';
 import Sidebar from './Sidebar';
 import get from 'lodash/get';
-import { getFirstCategory, serialiseApp, loadApp } from './../helpers/app-helper';
+import { getFirstCategory, getHighestIdFromHash, serialiseApp, loadApp } from './../helpers/app-helper';
+import { seed } from './../helpers/id-helpers';
 
 
 
@@ -12,6 +13,7 @@ export default class Main extends Component {
 
   constructor(props) {
     super(props);
+
 
     this.state = loadApp(new App(
       new Category('Some Notes',
@@ -29,7 +31,9 @@ export default class Main extends Component {
         of space in my code base, so hopefully this should be long enough.`)),
       new Category('More Notes',
         new Note('Another Note', 'a starter note about something else')
-      )))
+      )));
+      debugger;
+      seed(getHighestIdFromHash(this.state.categories))
   }
 
   updateCategories(f) {

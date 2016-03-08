@@ -3,6 +3,7 @@ import get from 'lodash/get';
 import head from 'lodash/head';
 import reduce from 'lodash/reduce';
 import curry from 'lodash/curry';
+import max from 'lodash/max';
 import { markdown } from 'markdown';
 
 export const setCategory = curry((category, categories) => set(categories, category.id, category));
@@ -41,3 +42,5 @@ export const loadApp = (defaultValue) => {
 }
 
 export const addModelToHash = (hash, model) => set(hash, model.id, model)
+
+export const getHighestIdFromHash = (hash) => max(Object.keys(hash).map(x => Number(x)))

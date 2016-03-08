@@ -23,6 +23,7 @@ body {
   margin-left: -250px;
   overflow-y: auto;
   background-color: black;
+  overflow-y: hidden;
 }
 
 .sidebar-list {

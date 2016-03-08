@@ -14,7 +14,7 @@ export default class AddCategoryButton extends Component {
 
   handleOnKeyDown(e){
     if (e.which !== 13) { return; }
-    debugger;
+
     this.props.updateCategories(categories => addModelToHash(categories, new Category(e.target.value.trim(), new Note('Start Here', 'Start Here'))))
     this.setState({
       isBeingEdited: false

@@ -24059,6 +24059,8 @@
 	
 	var _appHelper = __webpack_require__(208);
 	
+	var _idHelpers = __webpack_require__(354);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -24076,6 +24078,8 @@
 	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Main).call(this, props));
 	
 	    _this.state = (0, _appHelper.loadApp)(new _App2.default(new _Category2.default('Some Notes', new _Note2.default('A Note', 'a starter note with some pretty long content\n        that will take up a bunch of space and cause it to get\n        truncated, hopefully. Really, this is taking up a really big bit\n        of space in my code base, so hopefully this should be long enough.'), new _Note2.default('One more note', 'a starter note with some pretty long content\n        that will take up a bunch of space and cause it to get\n        truncated, hopefully. Really, this is taking up a really big bit\n        of space in my code base, so hopefully this should be long enough.'), new _Note2.default('I lied, one more', 'a starter note with some pretty long content\n        that will take up a bunch of space and cause it to get\n        truncated, hopefully. Really, this is taking up a really big bit\n        of space in my code base, so hopefully this should be long enough.')), new _Category2.default('More Notes', new _Note2.default('Another Note', 'a starter note about something else'))));
+	    debugger;
+	    (0, _idHelpers.seed)((0, _appHelper.getHighestIdFromHash)(_this.state.categories));
 	    return _this;
 	  }
 	
@@ -24161,7 +24165,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.addModelToHash = exports.loadApp = exports.serialiseApp = exports.markdowned = exports.updateNote = exports.hashOf = exports.has = exports.getFirstCategory = exports.setCategory = undefined;
+	exports.getHighestIdFromHash = exports.addModelToHash = exports.loadApp = exports.serialiseApp = exports.markdowned = exports.updateNote = exports.hashOf = exports.has = exports.getFirstCategory = exports.setCategory = undefined;
 	
 	var _set = __webpack_require__(209);
 	
@@ -24182,6 +24186,10 @@
 	var _curry = __webpack_require__(310);
 	
 	var _curry2 = _interopRequireDefault(_curry);
+	
+	var _max = __webpack_require__(390);
+	
+	var _max2 = _interopRequireDefault(_max);
 	
 	var _markdown = __webpack_require__(344);
 	
@@ -24234,6 +24242,12 @@
 	
 	var addModelToHash = exports.addModelToHash = function addModelToHash(hash, model) {
 	  return (0, _set2.default)(hash, model.id, model);
+	};
+	
+	var getHighestIdFromHash = exports.getHighestIdFromHash = function getHighestIdFromHash(hash) {
+	  return (0, _max2.default)(Object.keys(hash).map(function (x) {
+	    return Number(x);
+	  }));
 	};
 
 /***/ },
@@ -31655,6 +31669,10 @@
 	});
 	exports.default = id;
 	var count = 0;
+	var seed = exports.seed = function seed(num) {
+	  count = num;
+	};
+	
 	function id() {
 	  count = count + 1;
 	  return count;
@@ -31837,7 +31855,7 @@
 	      if (e.which !== 13) {
 	        return;
 	      }
-	      debugger;
+	
 	      this.props.updateCategories(function (categories) {
 	        return (0, _appHelper.addModelToHash)(categories, new _Category2.default(e.target.value.trim(), new _Note2.default('Start Here', 'Start Here')));
 	      });
@@ -33083,7 +33101,7 @@
 	
 	
 	// module
-	exports.push([module.id, "html, body, #app, .container {\n    height: 100%;\n    width: 100%;\n}\n\nbody {\n  margin: 0;\n}\n\n.main-content-container {\n  padding-left: 20px;\n}\n\n.sidebar-left-push {\n  padding-left: 250px;\n}\n\n.sidebar-container {\n  width: 250px;\n  position: fixed;\n  left: 250px;\n  height: 100%;\n  margin-left: -250px;\n  overflow-y: auto;\n  background-color: black;\n}\n\n.sidebar-list {\n  position: absolute;\n  top: 0;\n  width: 250px;\n  margin: 0;\n  padding: 0;\n  list-style: none;\n  margin-top: 20px;\n}\n\n.sidebar-list-item {\n  text-indent: 20px;\n  line-height: 40px;\n  color: #999;\n}\n\n.sidebar-list-item:hover {\n  color: #EEEEEE;\n  background-color: #555555\n}\n\n.new-note-book-input {\n  margin-top: 20px;\n  margin-bottom: 10px;\n  font-weight: 500;\n  line-height: 1.1;\n  font-size: 36px;\n  height: 39px;\n  width: 100%;\n}\n\n.note-list-item {\n  padding-top: 10px;\n  padding-bottom: 10px\n}\n.link {\n  color: #333 !important;\n}\n\n.link:hover {\n  text-decoration: none !important;\n}\n\n.sidebar-active-link li {\n  color: #EEEEEE;\n  background-color: #555555;\n  display: block;\n}\n\n.editor {\n  height: 100vh;\n  width: 100%;\n  resize: none;\n}\n\n.marked {\n  height: 100%;\n  width: 100%\n}\n\n.add-category-button {\n  margin-left: 25%;\n  margin-top: 80vh;\n  margin-bottom: 10px;\n}\n", ""]);
+	exports.push([module.id, "html, body, #app, .container {\n    height: 100%;\n    width: 100%;\n}\n\nbody {\n  margin: 0;\n}\n\n.main-content-container {\n  padding-left: 20px;\n}\n\n.sidebar-left-push {\n  padding-left: 250px;\n}\n\n.sidebar-container {\n  width: 250px;\n  position: fixed;\n  left: 250px;\n  height: 100%;\n  margin-left: -250px;\n  overflow-y: auto;\n  background-color: black;\n  overflow-y: hidden;\n}\n\n.sidebar-list {\n  position: absolute;\n  top: 0;\n  width: 250px;\n  margin: 0;\n  padding: 0;\n  list-style: none;\n  margin-top: 20px;\n}\n\n.sidebar-list-item {\n  text-indent: 20px;\n  line-height: 40px;\n  color: #999;\n}\n\n.sidebar-list-item:hover {\n  color: #EEEEEE;\n  background-color: #555555\n}\n\n.new-note-book-input {\n  margin-top: 20px;\n  margin-bottom: 10px;\n  font-weight: 500;\n  line-height: 1.1;\n  font-size: 36px;\n  height: 39px;\n  width: 100%;\n}\n\n.note-list-item {\n  padding-top: 10px;\n  padding-bottom: 10px\n}\n.link {\n  color: #333 !important;\n}\n\n.link:hover {\n  text-decoration: none !important;\n}\n\n.sidebar-active-link li {\n  color: #EEEEEE;\n  background-color: #555555;\n  display: block;\n}\n\n.editor {\n  height: 100vh;\n  width: 100%;\n  resize: none;\n}\n\n.marked {\n  height: 100%;\n  width: 100%\n}\n\n.add-category-button {\n  margin-left: 25%;\n  margin-top: 80vh;\n  margin-bottom: 10px;\n}\n", ""]);
 	
 	// exports
 
@@ -33396,6 +33414,107 @@
 		if(oldSrc)
 			URL.revokeObjectURL(oldSrc);
 	}
+
+
+/***/ },
+/* 390 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var baseExtremum = __webpack_require__(391),
+	    gt = __webpack_require__(392),
+	    identity = __webpack_require__(306);
+	
+	/**
+	 * Computes the maximum value of `array`. If `array` is empty or falsey
+	 * `undefined` is returned.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Math
+	 * @param {Array} array The array to iterate over.
+	 * @returns {*} Returns the maximum value.
+	 * @example
+	 *
+	 * _.max([4, 2, 8, 6]);
+	 * // => 8
+	 *
+	 * _.max([]);
+	 * // => undefined
+	 */
+	function max(array) {
+	  return (array && array.length)
+	    ? baseExtremum(array, identity, gt)
+	    : undefined;
+	}
+	
+	module.exports = max;
+
+
+/***/ },
+/* 391 */
+/***/ function(module, exports) {
+
+	/**
+	 * The base implementation of methods like `_.max` and `_.min` which accepts a
+	 * `comparator` to determine the extremum value.
+	 *
+	 * @private
+	 * @param {Array} array The array to iterate over.
+	 * @param {Function} iteratee The iteratee invoked per iteration.
+	 * @param {Function} comparator The comparator used to compare values.
+	 * @returns {*} Returns the extremum value.
+	 */
+	function baseExtremum(array, iteratee, comparator) {
+	  var index = -1,
+	      length = array.length;
+	
+	  while (++index < length) {
+	    var value = array[index],
+	        current = iteratee(value);
+	
+	    if (current != null && (computed === undefined
+	          ? current === current
+	          : comparator(current, computed)
+	        )) {
+	      var computed = current,
+	          result = value;
+	    }
+	  }
+	  return result;
+	}
+	
+	module.exports = baseExtremum;
+
+
+/***/ },
+/* 392 */
+/***/ function(module, exports) {
+
+	/**
+	 * Checks if `value` is greater than `other`.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to compare.
+	 * @param {*} other The other value to compare.
+	 * @returns {boolean} Returns `true` if `value` is greater than `other`, else `false`.
+	 * @example
+	 *
+	 * _.gt(3, 1);
+	 * // => true
+	 *
+	 * _.gt(3, 3);
+	 * // => false
+	 *
+	 * _.gt(1, 3);
+	 * // => false
+	 */
+	function gt(value, other) {
+	  return value > other;
+	}
+	
+	module.exports = gt;
 
 
 /***/ }
