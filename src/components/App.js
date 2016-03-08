@@ -50,7 +50,7 @@ export default class Main extends Component {
     return (
       <div className='container sidebar-left-push'>
           <div className='sidebar-container'>
-            <Sidebar categories={this.state.categories}/>
+            <Sidebar categories={this.state.categories} updateCategories={::this.updateCategories}/>
           </div>
           <div className='col-md-10 main-content-container'>
             {cloneElement(this.props.children, {

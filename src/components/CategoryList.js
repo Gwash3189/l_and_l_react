@@ -10,15 +10,17 @@ export default class Category extends Component {
   };
 
   render() {
+    const buttons = map(this.props.category.notes, note => {
+      return (
+          <CategoryListItem key={note.id} categoryId={this.props.category.id} note={note}/>
+      );
+    });
+
     return (
       <div>
         <h1>{this.props.category.title}</h1>
         <ul>
-          {map(this.props.category.notes, note => {
-            return (
-                <CategoryListItem key={note.id} categoryId={this.props.category.id} note={note}/>
-            );
-          })}
+          {buttons}
         </ul>
       </div>
     );

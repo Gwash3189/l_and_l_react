@@ -84,3 +84,9 @@ body {
   height: 100%;
   width: 100%
 }
+
+.add-category-button {
+  margin-left: 25%;
+  margin-top: 80vh;
+  margin-bottom: 10px;
+}

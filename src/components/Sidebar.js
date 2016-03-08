@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
+import AddCategoryButton from './AddCategoryButton';
 import map from 'lodash/map';
+import noop from 'lodash/noop';
 
 import SidebarItem from './SidebarItem';
 
 export default class Sidebar extends Component {
   static defaultProps = {
-    categories: [{title: 'asd'}]
+    categories: [{title: 'asd'}],
+    updateCategories: noop
   };
 
   render() {
@@ -24,6 +27,9 @@ export default class Sidebar extends Component {
             );
           })
         }
+          <li>
+            <AddCategoryButton updateCategories={this.props.updateCategories} />
+          </li>
         </ul>
       </div>
     );

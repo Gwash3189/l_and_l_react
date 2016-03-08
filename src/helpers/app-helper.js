@@ -39,3 +39,5 @@ export const loadApp = (defaultValue) => {
     ? defaultValue
     : JSON.parse(app);
 }
+
+export const addModelToHash = (hash, model) => set(hash, model.id, model)

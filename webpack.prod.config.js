@@ -18,7 +18,7 @@ module.exports = {
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': '"production"'
     })
-  ]
+  ],
   resolve: {
     extensions: ['', '.js', 'jsx']
   },
@@ -28,6 +28,10 @@ module.exports = {
         test: /\.js?$/,
         loaders: ['babel'],
         include: __dirname + '/src'
+      },
+      {
+        test: /\.css$/,
+        loader: "style-loader!css-loader"
       }
     ]
   }
