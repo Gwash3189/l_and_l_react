@@ -60,15 +60,15 @@
 	
 	var _App2 = _interopRequireDefault(_App);
 	
-	var _CategoryContainer = __webpack_require__(361);
+	var _CategoryContainer = __webpack_require__(364);
 	
 	var _CategoryContainer2 = _interopRequireDefault(_CategoryContainer);
 	
-	var _NotesContainer = __webpack_require__(385);
+	var _NotesContainer = __webpack_require__(388);
 	
 	var _NotesContainer2 = _interopRequireDefault(_NotesContainer);
 	
-	var _styles = __webpack_require__(386);
+	var _styles = __webpack_require__(389);
 	
 	var styles = _interopRequireWildcard(_styles);
 	
@@ -24041,15 +24041,15 @@
 	
 	var _App2 = _interopRequireDefault(_App);
 	
-	var _Category = __webpack_require__(353);
+	var _Category = __webpack_require__(356);
 	
 	var _Category2 = _interopRequireDefault(_Category);
 	
-	var _Note = __webpack_require__(355);
+	var _Note = __webpack_require__(358);
 	
 	var _Note2 = _interopRequireDefault(_Note);
 	
-	var _Sidebar = __webpack_require__(356);
+	var _Sidebar = __webpack_require__(359);
 	
 	var _Sidebar2 = _interopRequireDefault(_Sidebar);
 	
@@ -24059,7 +24059,7 @@
 	
 	var _appHelper = __webpack_require__(208);
 	
-	var _idHelpers = __webpack_require__(354);
+	var _idHelpers = __webpack_require__(357);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -24078,7 +24078,7 @@
 	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Main).call(this, props));
 	
 	    _this.state = (0, _appHelper.loadApp)(new _App2.default(new _Category2.default('Some Notes', new _Note2.default('A Note', 'a starter note with some pretty long content\n        that will take up a bunch of space and cause it to get\n        truncated, hopefully. Really, this is taking up a really big bit\n        of space in my code base, so hopefully this should be long enough.'), new _Note2.default('One more note', 'a starter note with some pretty long content\n        that will take up a bunch of space and cause it to get\n        truncated, hopefully. Really, this is taking up a really big bit\n        of space in my code base, so hopefully this should be long enough.'), new _Note2.default('I lied, one more', 'a starter note with some pretty long content\n        that will take up a bunch of space and cause it to get\n        truncated, hopefully. Really, this is taking up a really big bit\n        of space in my code base, so hopefully this should be long enough.')), new _Category2.default('More Notes', new _Note2.default('Another Note', 'a starter note about something else'))));
-	    debugger;
+	
 	    (0, _idHelpers.seed)((0, _appHelper.getHighestIdFromHash)(_this.state.categories));
 	    return _this;
 	  }
@@ -24140,7 +24140,7 @@
 	
 	var _appHelper = __webpack_require__(208);
 	
-	var _each = __webpack_require__(349);
+	var _each = __webpack_require__(352);
 	
 	var _each2 = _interopRequireDefault(_each);
 	
@@ -24187,11 +24187,11 @@
 	
 	var _curry2 = _interopRequireDefault(_curry);
 	
-	var _max = __webpack_require__(390);
+	var _max = __webpack_require__(344);
 	
 	var _max2 = _interopRequireDefault(_max);
 	
-	var _markdown = __webpack_require__(344);
+	var _markdown = __webpack_require__(347);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -29145,13 +29145,114 @@
 /* 344 */
 /***/ function(module, exports, __webpack_require__) {
 
-	// super simple module for the most common nodejs use case.
-	exports.markdown = __webpack_require__(345);
-	exports.parse = exports.markdown.toHTML;
+	var baseExtremum = __webpack_require__(345),
+	    gt = __webpack_require__(346),
+	    identity = __webpack_require__(306);
+	
+	/**
+	 * Computes the maximum value of `array`. If `array` is empty or falsey
+	 * `undefined` is returned.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Math
+	 * @param {Array} array The array to iterate over.
+	 * @returns {*} Returns the maximum value.
+	 * @example
+	 *
+	 * _.max([4, 2, 8, 6]);
+	 * // => 8
+	 *
+	 * _.max([]);
+	 * // => undefined
+	 */
+	function max(array) {
+	  return (array && array.length)
+	    ? baseExtremum(array, identity, gt)
+	    : undefined;
+	}
+	
+	module.exports = max;
 
 
 /***/ },
 /* 345 */
+/***/ function(module, exports) {
+
+	/**
+	 * The base implementation of methods like `_.max` and `_.min` which accepts a
+	 * `comparator` to determine the extremum value.
+	 *
+	 * @private
+	 * @param {Array} array The array to iterate over.
+	 * @param {Function} iteratee The iteratee invoked per iteration.
+	 * @param {Function} comparator The comparator used to compare values.
+	 * @returns {*} Returns the extremum value.
+	 */
+	function baseExtremum(array, iteratee, comparator) {
+	  var index = -1,
+	      length = array.length;
+	
+	  while (++index < length) {
+	    var value = array[index],
+	        current = iteratee(value);
+	
+	    if (current != null && (computed === undefined
+	          ? current === current
+	          : comparator(current, computed)
+	        )) {
+	      var computed = current,
+	          result = value;
+	    }
+	  }
+	  return result;
+	}
+	
+	module.exports = baseExtremum;
+
+
+/***/ },
+/* 346 */
+/***/ function(module, exports) {
+
+	/**
+	 * Checks if `value` is greater than `other`.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to compare.
+	 * @param {*} other The other value to compare.
+	 * @returns {boolean} Returns `true` if `value` is greater than `other`, else `false`.
+	 * @example
+	 *
+	 * _.gt(3, 1);
+	 * // => true
+	 *
+	 * _.gt(3, 3);
+	 * // => false
+	 *
+	 * _.gt(1, 3);
+	 * // => false
+	 */
+	function gt(value, other) {
+	  return value > other;
+	}
+	
+	module.exports = gt;
+
+
+/***/ },
+/* 347 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// super simple module for the most common nodejs use case.
+	exports.markdown = __webpack_require__(348);
+	exports.parse = exports.markdown.toHTML;
+
+
+/***/ },
+/* 348 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// Released under MIT license
@@ -29283,7 +29384,7 @@
 	
 	// node
 	function mk_block_inspect() {
-	  var util = __webpack_require__(346);
+	  var util = __webpack_require__(349);
 	  return "Markdown.mk_block( " +
 	          util.inspect(this.toString()) +
 	          ", " +
@@ -30882,7 +30983,7 @@
 
 
 /***/ },
-/* 346 */
+/* 349 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global, process) {// Copyright Joyent, Inc. and other Node contributors.
@@ -31410,7 +31511,7 @@
 	}
 	exports.isPrimitive = isPrimitive;
 	
-	exports.isBuffer = __webpack_require__(347);
+	exports.isBuffer = __webpack_require__(350);
 	
 	function objectToString(o) {
 	  return Object.prototype.toString.call(o);
@@ -31454,7 +31555,7 @@
 	 *     prototype.
 	 * @param {function} superCtor Constructor function to inherit prototype from.
 	 */
-	exports.inherits = __webpack_require__(348);
+	exports.inherits = __webpack_require__(351);
 	
 	exports._extend = function(origin, add) {
 	  // Don't do anything if add isn't an object
@@ -31475,7 +31576,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(4)))
 
 /***/ },
-/* 347 */
+/* 350 */
 /***/ function(module, exports) {
 
 	module.exports = function isBuffer(arg) {
@@ -31486,7 +31587,7 @@
 	}
 
 /***/ },
-/* 348 */
+/* 351 */
 /***/ function(module, exports) {
 
 	if (typeof Object.create === 'function') {
@@ -31515,18 +31616,18 @@
 
 
 /***/ },
-/* 349 */
+/* 352 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(350);
+	module.exports = __webpack_require__(353);
 
 
 /***/ },
-/* 350 */
+/* 353 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var arrayEach = __webpack_require__(351),
-	    baseCastFunction = __webpack_require__(352),
+	var arrayEach = __webpack_require__(354),
+	    baseCastFunction = __webpack_require__(355),
 	    baseEach = __webpack_require__(231),
 	    isArray = __webpack_require__(214);
 	
@@ -31568,7 +31669,7 @@
 
 
 /***/ },
-/* 351 */
+/* 354 */
 /***/ function(module, exports) {
 
 	/**
@@ -31596,7 +31697,7 @@
 
 
 /***/ },
-/* 352 */
+/* 355 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var identity = __webpack_require__(306);
@@ -31616,7 +31717,7 @@
 
 
 /***/ },
-/* 353 */
+/* 356 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31633,7 +31734,7 @@
 	
 	var _get2 = _interopRequireDefault(_get);
 	
-	var _idHelpers = __webpack_require__(354);
+	var _idHelpers = __webpack_require__(357);
 	
 	var _idHelpers2 = _interopRequireDefault(_idHelpers);
 	
@@ -31659,7 +31760,7 @@
 	exports.default = Category;
 
 /***/ },
-/* 354 */
+/* 357 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -31679,7 +31780,7 @@
 	}
 
 /***/ },
-/* 355 */
+/* 358 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31688,11 +31789,11 @@
 	  value: true
 	});
 	
-	var _idHelpers = __webpack_require__(354);
+	var _idHelpers = __webpack_require__(357);
 	
 	var _idHelpers2 = _interopRequireDefault(_idHelpers);
 	
-	var _markdown = __webpack_require__(344);
+	var _markdown = __webpack_require__(347);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -31712,7 +31813,7 @@
 	exports.default = Note;
 
 /***/ },
-/* 356 */
+/* 359 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31729,11 +31830,11 @@
 	
 	var _reactRouter = __webpack_require__(159);
 	
-	var _AddCategoryButton = __webpack_require__(357);
+	var _AddCategoryButton = __webpack_require__(360);
 	
 	var _AddCategoryButton2 = _interopRequireDefault(_AddCategoryButton);
 	
-	var _map = __webpack_require__(358);
+	var _map = __webpack_require__(361);
 	
 	var _map2 = _interopRequireDefault(_map);
 	
@@ -31741,7 +31842,7 @@
 	
 	var _noop2 = _interopRequireDefault(_noop);
 	
-	var _SidebarItem = __webpack_require__(360);
+	var _SidebarItem = __webpack_require__(363);
 	
 	var _SidebarItem2 = _interopRequireDefault(_SidebarItem);
 	
@@ -31802,7 +31903,7 @@
 	exports.default = Sidebar;
 
 /***/ },
-/* 357 */
+/* 360 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31813,11 +31914,11 @@
 	  value: true
 	});
 	
-	var _Category = __webpack_require__(353);
+	var _Category = __webpack_require__(356);
 	
 	var _Category2 = _interopRequireDefault(_Category);
 	
-	var _Note = __webpack_require__(355);
+	var _Note = __webpack_require__(358);
 	
 	var _Note2 = _interopRequireDefault(_Note);
 	
@@ -31887,12 +31988,12 @@
 	exports.default = AddCategoryButton;
 
 /***/ },
-/* 358 */
+/* 361 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var arrayMap = __webpack_require__(298),
 	    baseIteratee = __webpack_require__(250),
-	    baseMap = __webpack_require__(359),
+	    baseMap = __webpack_require__(362),
 	    isArray = __webpack_require__(214);
 	
 	/**
@@ -31945,7 +32046,7 @@
 
 
 /***/ },
-/* 359 */
+/* 362 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var baseEach = __webpack_require__(231),
@@ -31973,7 +32074,7 @@
 
 
 /***/ },
-/* 360 */
+/* 363 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32025,7 +32126,7 @@
 	exports.default = SidebarItem;
 
 /***/ },
-/* 361 */
+/* 364 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32048,19 +32149,19 @@
 	
 	var _set2 = _interopRequireDefault(_set);
 	
-	var _cloneDeep = __webpack_require__(362);
+	var _cloneDeep = __webpack_require__(365);
 	
 	var _cloneDeep2 = _interopRequireDefault(_cloneDeep);
 	
-	var _Category = __webpack_require__(353);
+	var _Category = __webpack_require__(356);
 	
 	var _Category2 = _interopRequireDefault(_Category);
 	
-	var _CategoryList = __webpack_require__(383);
+	var _CategoryList = __webpack_require__(386);
 	
 	var _CategoryList2 = _interopRequireDefault(_CategoryList);
 	
-	var _NotesContainer = __webpack_require__(385);
+	var _NotesContainer = __webpack_require__(388);
 	
 	var _NotesContainer2 = _interopRequireDefault(_NotesContainer);
 	
@@ -32113,10 +32214,10 @@
 	exports.default = CategoryContainer;
 
 /***/ },
-/* 362 */
+/* 365 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseClone = __webpack_require__(363);
+	var baseClone = __webpack_require__(366);
 	
 	/**
 	 * This method is like `_.clone` except that it recursively clones `value`.
@@ -32142,23 +32243,23 @@
 
 
 /***/ },
-/* 363 */
+/* 366 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Stack = __webpack_require__(253),
-	    arrayEach = __webpack_require__(351),
+	    arrayEach = __webpack_require__(354),
 	    assignValue = __webpack_require__(211),
-	    baseAssign = __webpack_require__(364),
+	    baseAssign = __webpack_require__(367),
 	    baseForOwn = __webpack_require__(232),
-	    cloneBuffer = __webpack_require__(367),
+	    cloneBuffer = __webpack_require__(370),
 	    copyArray = __webpack_require__(324),
-	    copySymbols = __webpack_require__(368),
+	    copySymbols = __webpack_require__(371),
 	    getTag = __webpack_require__(290),
-	    initCloneArray = __webpack_require__(370),
-	    initCloneByTag = __webpack_require__(371),
-	    initCloneObject = __webpack_require__(380),
+	    initCloneArray = __webpack_require__(373),
+	    initCloneByTag = __webpack_require__(374),
+	    initCloneObject = __webpack_require__(383),
 	    isArray = __webpack_require__(214),
-	    isBuffer = __webpack_require__(381),
+	    isBuffer = __webpack_require__(384),
 	    isHostObject = __webpack_require__(269),
 	    isObject = __webpack_require__(225);
 	
@@ -32279,10 +32380,10 @@
 
 
 /***/ },
-/* 364 */
+/* 367 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var copyObject = __webpack_require__(365),
+	var copyObject = __webpack_require__(368),
 	    keys = __webpack_require__(235);
 	
 	/**
@@ -32302,10 +32403,10 @@
 
 
 /***/ },
-/* 365 */
+/* 368 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var copyObjectWith = __webpack_require__(366);
+	var copyObjectWith = __webpack_require__(369);
 	
 	/**
 	 * Copies properties of `source` to `object`.
@@ -32324,7 +32425,7 @@
 
 
 /***/ },
-/* 366 */
+/* 369 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var assignValue = __webpack_require__(211);
@@ -32362,7 +32463,7 @@
 
 
 /***/ },
-/* 367 */
+/* 370 */
 /***/ function(module, exports) {
 
 	/**
@@ -32386,11 +32487,11 @@
 
 
 /***/ },
-/* 368 */
+/* 371 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var copyObject = __webpack_require__(365),
-	    getSymbols = __webpack_require__(369);
+	var copyObject = __webpack_require__(368),
+	    getSymbols = __webpack_require__(372);
 	
 	/**
 	 * Copies own symbol properties of `source` to `object`.
@@ -32408,7 +32509,7 @@
 
 
 /***/ },
-/* 369 */
+/* 372 */
 /***/ function(module, exports) {
 
 	/** Built-in value references. */
@@ -32429,7 +32530,7 @@
 
 
 /***/ },
-/* 370 */
+/* 373 */
 /***/ function(module, exports) {
 
 	/** Used for built-in method references. */
@@ -32461,15 +32562,15 @@
 
 
 /***/ },
-/* 371 */
+/* 374 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var cloneArrayBuffer = __webpack_require__(372),
-	    cloneMap = __webpack_require__(373),
-	    cloneRegExp = __webpack_require__(375),
-	    cloneSet = __webpack_require__(376),
-	    cloneSymbol = __webpack_require__(378),
-	    cloneTypedArray = __webpack_require__(379);
+	var cloneArrayBuffer = __webpack_require__(375),
+	    cloneMap = __webpack_require__(376),
+	    cloneRegExp = __webpack_require__(378),
+	    cloneSet = __webpack_require__(379),
+	    cloneSymbol = __webpack_require__(381),
+	    cloneTypedArray = __webpack_require__(382);
 	
 	/** `Object#toString` result references. */
 	var boolTag = '[object Boolean]',
@@ -32541,7 +32642,7 @@
 
 
 /***/ },
-/* 372 */
+/* 375 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Uint8Array = __webpack_require__(286);
@@ -32563,10 +32664,10 @@
 
 
 /***/ },
-/* 373 */
+/* 376 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var addMapEntry = __webpack_require__(374),
+	var addMapEntry = __webpack_require__(377),
 	    arrayReduce = __webpack_require__(230),
 	    mapToArray = __webpack_require__(287);
 	
@@ -32585,7 +32686,7 @@
 
 
 /***/ },
-/* 374 */
+/* 377 */
 /***/ function(module, exports) {
 
 	/**
@@ -32606,7 +32707,7 @@
 
 
 /***/ },
-/* 375 */
+/* 378 */
 /***/ function(module, exports) {
 
 	/** Used to match `RegExp` flags from their coerced string values. */
@@ -32629,10 +32730,10 @@
 
 
 /***/ },
-/* 376 */
+/* 379 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var addSetEntry = __webpack_require__(377),
+	var addSetEntry = __webpack_require__(380),
 	    arrayReduce = __webpack_require__(230),
 	    setToArray = __webpack_require__(288);
 	
@@ -32651,7 +32752,7 @@
 
 
 /***/ },
-/* 377 */
+/* 380 */
 /***/ function(module, exports) {
 
 	/**
@@ -32671,7 +32772,7 @@
 
 
 /***/ },
-/* 378 */
+/* 381 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Symbol = __webpack_require__(217);
@@ -32695,10 +32796,10 @@
 
 
 /***/ },
-/* 379 */
+/* 382 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var cloneArrayBuffer = __webpack_require__(372);
+	var cloneArrayBuffer = __webpack_require__(375);
 	
 	/**
 	 * Creates a clone of `typedArray`.
@@ -32717,7 +32818,7 @@
 
 
 /***/ },
-/* 380 */
+/* 383 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var baseCreate = __webpack_require__(316),
@@ -32743,10 +32844,10 @@
 
 
 /***/ },
-/* 381 */
+/* 384 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(module) {var constant = __webpack_require__(382),
+	/* WEBPACK VAR INJECTION */(function(module) {var constant = __webpack_require__(385),
 	    root = __webpack_require__(218);
 	
 	/** Used to determine if values are of the language type `Object`. */
@@ -32798,7 +32899,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(219)(module)))
 
 /***/ },
-/* 382 */
+/* 385 */
 /***/ function(module, exports) {
 
 	/**
@@ -32827,7 +32928,7 @@
 
 
 /***/ },
-/* 383 */
+/* 386 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32842,11 +32943,11 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _CategoryListItem = __webpack_require__(384);
+	var _CategoryListItem = __webpack_require__(387);
 	
 	var _CategoryListItem2 = _interopRequireDefault(_CategoryListItem);
 	
-	var _map = __webpack_require__(358);
+	var _map = __webpack_require__(361);
 	
 	var _map2 = _interopRequireDefault(_map);
 	
@@ -32858,16 +32959,16 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var Category = function (_Component) {
-	  _inherits(Category, _Component);
+	var CategoryList = function (_Component) {
+	  _inherits(CategoryList, _Component);
 	
-	  function Category() {
-	    _classCallCheck(this, Category);
+	  function CategoryList() {
+	    _classCallCheck(this, CategoryList);
 	
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Category).apply(this, arguments));
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(CategoryList).apply(this, arguments));
 	  }
 	
-	  _createClass(Category, [{
+	  _createClass(CategoryList, [{
 	    key: 'render',
 	    value: function render() {
 	      var _this2 = this;
@@ -32893,18 +32994,18 @@
 	    }
 	  }]);
 	
-	  return Category;
+	  return CategoryList;
 	}(_react.Component);
 	
-	Category.defaultProps = {
+	CategoryList.defaultProps = {
 	  category: {
 	    notes: []
 	  }
 	};
-	exports.default = Category;
+	exports.default = CategoryList;
 
 /***/ },
-/* 384 */
+/* 387 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32979,7 +33080,7 @@
 	exports.default = Note;
 
 /***/ },
-/* 385 */
+/* 388 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32996,7 +33097,7 @@
 	
 	var _reactRouter = __webpack_require__(159);
 	
-	var _cloneDeep = __webpack_require__(362);
+	var _cloneDeep = __webpack_require__(365);
 	
 	var _cloneDeep2 = _interopRequireDefault(_cloneDeep);
 	
@@ -33067,16 +33168,16 @@
 	exports.default = NotesContainer;
 
 /***/ },
-/* 386 */
+/* 389 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(387);
+	var content = __webpack_require__(390);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(389)(content, {});
+	var update = __webpack_require__(392)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -33093,10 +33194,10 @@
 	}
 
 /***/ },
-/* 387 */
+/* 390 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(388)();
+	exports = module.exports = __webpack_require__(391)();
 	// imports
 	
 	
@@ -33107,7 +33208,7 @@
 
 
 /***/ },
-/* 388 */
+/* 391 */
 /***/ function(module, exports) {
 
 	/*
@@ -33163,7 +33264,7 @@
 
 
 /***/ },
-/* 389 */
+/* 392 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -33414,107 +33515,6 @@
 		if(oldSrc)
 			URL.revokeObjectURL(oldSrc);
 	}
-
-
-/***/ },
-/* 390 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var baseExtremum = __webpack_require__(391),
-	    gt = __webpack_require__(392),
-	    identity = __webpack_require__(306);
-	
-	/**
-	 * Computes the maximum value of `array`. If `array` is empty or falsey
-	 * `undefined` is returned.
-	 *
-	 * @static
-	 * @memberOf _
-	 * @category Math
-	 * @param {Array} array The array to iterate over.
-	 * @returns {*} Returns the maximum value.
-	 * @example
-	 *
-	 * _.max([4, 2, 8, 6]);
-	 * // => 8
-	 *
-	 * _.max([]);
-	 * // => undefined
-	 */
-	function max(array) {
-	  return (array && array.length)
-	    ? baseExtremum(array, identity, gt)
-	    : undefined;
-	}
-	
-	module.exports = max;
-
-
-/***/ },
-/* 391 */
-/***/ function(module, exports) {
-
-	/**
-	 * The base implementation of methods like `_.max` and `_.min` which accepts a
-	 * `comparator` to determine the extremum value.
-	 *
-	 * @private
-	 * @param {Array} array The array to iterate over.
-	 * @param {Function} iteratee The iteratee invoked per iteration.
-	 * @param {Function} comparator The comparator used to compare values.
-	 * @returns {*} Returns the extremum value.
-	 */
-	function baseExtremum(array, iteratee, comparator) {
-	  var index = -1,
-	      length = array.length;
-	
-	  while (++index < length) {
-	    var value = array[index],
-	        current = iteratee(value);
-	
-	    if (current != null && (computed === undefined
-	          ? current === current
-	          : comparator(current, computed)
-	        )) {
-	      var computed = current,
-	          result = value;
-	    }
-	  }
-	  return result;
-	}
-	
-	module.exports = baseExtremum;
-
-
-/***/ },
-/* 392 */
-/***/ function(module, exports) {
-
-	/**
-	 * Checks if `value` is greater than `other`.
-	 *
-	 * @static
-	 * @memberOf _
-	 * @category Lang
-	 * @param {*} value The value to compare.
-	 * @param {*} other The other value to compare.
-	 * @returns {boolean} Returns `true` if `value` is greater than `other`, else `false`.
-	 * @example
-	 *
-	 * _.gt(3, 1);
-	 * // => true
-	 *
-	 * _.gt(3, 3);
-	 * // => false
-	 *
-	 * _.gt(1, 3);
-	 * // => false
-	 */
-	function gt(value, other) {
-	  return value > other;
-	}
-	
-	module.exports = gt;
 
 
 /***/ }
