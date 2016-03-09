@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import CategoryListItem from './CategoryListItem';
 import map from 'lodash/map';
 
-export default class Category extends Component {
+export default class CategoryList extends Component {
   static defaultProps = {
     category: {
       notes: []

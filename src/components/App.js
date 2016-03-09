@@ -32,7 +32,7 @@ export default class Main extends Component {
       new Category('More Notes',
         new Note('Another Note', 'a starter note about something else')
       )));
-      debugger;
+      
       seed(getHighestIdFromHash(this.state.categories))
   }
 
